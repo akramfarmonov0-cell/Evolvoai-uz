@@ -9,7 +9,7 @@ import PWAInstall from '@/components/PWAInstall'
 const inter = Inter({ subsets: ['latin', 'cyrillic'] })
 
 export const metadata = {
-  metadataBase: new URL('https://evolvoai.uz'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://evolvoai-main.vercel.app'),
   title: {
     default: 'EvolvoAI - Web Sayt, Telegram Bot, AI Chatbot Yaratish | O\'zbekiston',
     template: '%s | EvolvoAI - IT Xizmatlari O\'zbekistonda'
@@ -67,7 +67,7 @@ export const metadata = {
     'to\'lov tizimi integratsiya',
     'Click, Payme integratsiya'
   ],
-  authors: [{ name: 'EvolvoAI', url: 'https://evolvoai.uz' }],
+  authors: [{ name: 'EvolvoAI', url: 'https://evolvoai-main.vercel.app' }],
   creator: 'EvolvoAI IT Company',
   publisher: 'EvolvoAI',
   formatDetection: {
@@ -78,7 +78,7 @@ export const metadata = {
   openGraph: {
     type: 'website',
     locale: 'uz_UZ',
-    url: 'https://evolvoai.uz',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://evolvoai-main.vercel.app',
     siteName: 'EvolvoAI - IT Xizmatlari',
     title: 'EvolvoAI - Web Sayt, Telegram Bot, AI Chatbot Yaratish',
     description: 'O\'zbekistonda professional IT xizmatlari: Web sayt yaratish, Telegram bot dasturlash, AI chatbot, biznes avtomatlashtirish. Toshkent. ☎️ +998 97 477 12 29',
@@ -113,9 +113,9 @@ export const metadata = {
     yandex: 'your-yandex-verification-code',
   },
   alternates: {
-    canonical: 'https://evolvoai.uz',
+    canonical: process.env.NEXT_PUBLIC_SITE_URL || 'https://evolvoai-main.vercel.app',
     languages: {
-      'uz-UZ': 'https://evolvoai.uz',
+      'uz-UZ': process.env.NEXT_PUBLIC_SITE_URL || 'https://evolvoai-main.vercel.app',
     },
   },
   category: 'technology',

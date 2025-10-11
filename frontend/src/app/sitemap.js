@@ -1,5 +1,5 @@
 export default function sitemap() {
-  const baseUrl = 'https://evolvoai.uz'
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://evolvoai-main.vercel.app'
   const currentDate = new Date().toISOString()
 
   return [
@@ -60,6 +60,18 @@ export default function sitemap() {
     },
     {
       url: `${baseUrl}/services/automation`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/services/ai-integration`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/services/mobile-apps`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.8,

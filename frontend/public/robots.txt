@@ -1,20 +1,34 @@
+# EvolvoAI - Robots.txt
 # https://www.robotstxt.org/robotstxt.html
+
+# Allow all search engines
 User-agent: *
 Allow: /
 
-# Sitemaps
-Sitemap: https://evolvoai.uz/sitemap.xml
-
-# Disallow admin areas
+# Disallow admin and API
 Disallow: /admin/
 Disallow: /api/
+Disallow: /login
 
-# Allow search engines
+# Sitemap
+Sitemap: https://evolvoai-main.vercel.app/sitemap.xml
+
+# Specific search engines
 User-agent: Googlebot
 Allow: /
-
-User-agent: Yandex
-Allow: /
+Crawl-delay: 0
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
+
+User-agent: Yandex
+Allow: /
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot  
+Crawl-delay: 10
