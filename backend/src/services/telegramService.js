@@ -417,21 +417,17 @@ process.once('SIGTERM', () => bot.stop('SIGTERM'));
 
 async function sendPostToTelegram(post) {
   try {
-    // Markdown belgilarini escape qilish
-    const escapeMarkdown = (text) => {
-      return text.replace(/[_*[\]()~`>#+=|{}.!-]/g, '\\$&');
-    };
-
-    // Taglarni tozalash
-    const cleanTags = post.tags.map(tag => 
-      '#' + tag.replace(/[^a-zA-Z0-9_]/g, '_').replace(/_{2,}/g, '_')
+    // Faqat 2-3 ta hashtag tanlash
+    const selectedTags = post.tags.slice(0, 3).map(tag => 
+      '#' + tag.replace(/[^a-zA-Z0-9_]/g, '').toLowerCase()
     ).join(' ');
 
+    // HTML formatda caption (belgilarsiz, toza)
     const caption = 
-      `📝 *${escapeMarkdown(post.title)}*\n\n` +
-      `${escapeMarkdown(post.excerpt)}\n\n` +
-      `🔗 To'liq o'qish: https://evolvoai.uz/blog/${post.slug}\n\n` +
-      `#${post.category.replace(/-/g, '_')} ${cleanTags}`;
+      `📝 <b>${post.title}</b>\n\n` +
+      `${post.excerpt}\n\n` +
+      `🔗 To'liq o'qish: ${process.env.FRONTEND_URL || 'https://evolvoai-main.vercel.app'}/blog/${post.slug}\n\n` +
+      `${selectedTags}`;
 
     // Agar rasm mavjud bo'lsa, rasm bilan yuborish
     if (post.image) {
@@ -440,7 +436,7 @@ async function sendPostToTelegram(post) {
         post.image,
         { 
           caption: caption,
-          parse_mode: 'Markdown'
+          parse_mode: 'HTML'
         }
       );
       return result.message_id;
@@ -449,7 +445,7 @@ async function sendPostToTelegram(post) {
       const result = await bot.telegram.sendMessage(
         process.env.TELEGRAM_CHANNEL_ID,
         caption,
-        { parse_mode: 'Markdown' }
+        { parse_mode: 'HTML' }
       );
       return result.message_id;
     }
@@ -457,12 +453,14 @@ async function sendPostToTelegram(post) {
   } catch (error) {
     console.error('Telegram yuborish xatosi:', error);
     
-    // Agar Markdown xato bersa, oddiy text yuborish
+    // Agar HTML xato bersa, oddiy text yuborish
     try {
+      const selectedTags = post.tags.slice(0, 3).map(tag => '#' + tag).join(' ');
       const simpleCaption = 
         `📝 ${post.title}\n\n` +
         `${post.excerpt}\n\n` +
-        `🔗 To'liq o'qish: https://evolvoai.uz/blog/${post.slug}`;
+        `🔗 To'liq o'qish: ${process.env.FRONTEND_URL || 'https://evolvoai-main.vercel.app'}/blog/${post.slug}\n\n` +
+        `${selectedTags}`;
 
       if (post.image) {
         const result = await bot.telegram.sendPhoto(
@@ -503,7 +501,10 @@ Faqat post matnini yozing, qo'shimcha tushuntirish kerak emas.
     const result = await model.generateContent(prompt);
     const postText = result.response.text();
 
-    const message = `${postText}\n\n🌐 https://evolvoai.uz\n📱 @evolvoai`;
+    // Faqat 2-3 ta hashtag
+    const hashtags = ['#EvolvoAI', '#ITxizmatlari'];
+    
+    const message = `${postText}\n\n🌐 ${process.env.FRONTEND_URL || 'https://evolvoai-main.vercel.app'}\n📱 @evolvoai\n\n${hashtags.join(' ')}`;
 
     await bot.telegram.sendMessage(
       process.env.TELEGRAM_CHANNEL_ID,
