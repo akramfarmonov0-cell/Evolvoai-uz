@@ -49,42 +49,65 @@ export default function PWAInstall() {
   const handleDismiss = () => {
     setShowInstallPrompt(false)
     localStorage.setItem('pwa-install-dismissed', 'true')
+    // Allow showing again after 7 days
+    setTimeout(() => {
+      localStorage.removeItem('pwa-install-dismissed')
+    }, 7 * 24 * 60 * 60 * 1000)
   }
 
+  // Show mini icon if prompt was dismissed
+  const dismissed = localStorage.getItem('pwa-install-dismissed')
+  
+  if (!showInstallPrompt && dismissed && deferredPrompt) {
+    return (
+      <button
+        onClick={() => setShowInstallPrompt(true)}
+        className="fixed top-4 left-4 sm:top-6 sm:left-6 bg-gradient-to-r from-primary-600 to-blue-600 text-white p-2.5 sm:p-3 rounded-full shadow-lg hover:shadow-xl transition-all z-[55] hover:scale-110 group"
+        aria-label="PWA o'rnatish"
+      >
+        <Download className="w-4 h-4 sm:w-5 sm:h-5" />
+        <span className="absolute -bottom-8 left-0 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+          O'rnatish
+        </span>
+      </button>
+    )
+  }
+  
   if (!showInstallPrompt) return null
 
   return (
-    <div className="fixed bottom-20 left-4 right-4 md:left-auto md:right-24 md:max-w-sm bg-white rounded-xl shadow-2xl p-4 z-40 border border-gray-200 animate-slide-up">
+    <div className="fixed top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-auto sm:max-w-sm md:max-w-md bg-white rounded-xl shadow-2xl p-4 z-[60] border border-gray-200 animate-slide-down">
       <button
         onClick={handleDismiss}
         className="absolute top-2 right-2 p-1 text-gray-400 hover:text-gray-600 transition"
+        aria-label="Yopish"
       >
         <X className="w-4 h-4" />
       </button>
       
       <div className="flex items-start gap-3">
-        <div className="bg-primary-100 p-3 rounded-lg">
-          <Download className="w-6 h-6 text-primary-600" />
+        <div className="bg-primary-100 p-2 sm:p-3 rounded-lg flex-shrink-0">
+          <Download className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600" />
         </div>
-        <div className="flex-1">
-          <h3 className="font-semibold text-gray-900 mb-1">
-            Ilovani O'rnating
+        <div className="flex-1 min-w-0">
+          <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">
+            📱 Ilovani O'rnating
           </h3>
-          <p className="text-sm text-gray-600 mb-3">
-            EvolvoAI ni telefoningizga o'rnating va tezroq kirish imkoniga ega bo'ling!
+          <p className="text-xs sm:text-sm text-gray-600 mb-3">
+            EvolvoAI'ni telefoningizga o'rnating va offline rejimda ishlating!
           </p>
           <div className="flex gap-2">
             <button
               onClick={handleInstallClick}
-              className="flex-1 bg-primary-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary-700 transition"
+              className="flex-1 bg-primary-600 text-white px-3 py-2 rounded-lg text-xs sm:text-sm font-medium hover:bg-primary-700 transition active:scale-95"
             >
               O'rnatish
             </button>
             <button
               onClick={handleDismiss}
-              className="px-4 py-2 text-gray-600 text-sm font-medium hover:text-gray-800 transition"
+              className="px-3 py-2 text-gray-600 text-xs sm:text-sm font-medium hover:text-gray-800 transition"
             >
-              Keyinroq
+              Yo'q
             </button>
           </div>
         </div>
