@@ -109,7 +109,7 @@ export const metadata = {
     },
   },
   verification: {
-    google: 'your-google-verification-code',
+    google: 'oBW8_eXRTNmBH_V0h0JfkSUkhxGeh618ukJ7bWtIhPQ',
     yandex: 'your-yandex-verification-code',
   },
   alternates: {
