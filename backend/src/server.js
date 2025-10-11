@@ -50,8 +50,8 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date() });
 });
 
-// Har kuni soat 10:00 da avtomatik post generatsiya
-cron.schedule('0 10 * * *', async () => {
+// Har 6 soatda avtomatik blog post generatsiya (4 marta kuniga)
+cron.schedule('0 */6 * * *', async () => {
   console.log('🤖 Avtomatik kontent generatsiya boshlandi...');
   try {
     await generateAndPublishPosts();
@@ -61,8 +61,8 @@ cron.schedule('0 10 * * *', async () => {
   }
 });
 
-// Har soatda bir marta marketing post
-cron.schedule('0 */3 * * *', async () => {
+// Har 6 soatda marketing post (4 marta kuniga)
+cron.schedule('30 */6 * * *', async () => {
   console.log('📢 Marketing post yuborish...');
   const { sendMarketingPost } = require('./services/telegramService');
   try {
