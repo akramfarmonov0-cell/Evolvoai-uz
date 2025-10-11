@@ -8,6 +8,9 @@ export default function PWAInstall() {
   const [showInstallPrompt, setShowInstallPrompt] = useState(false)
 
   useEffect(() => {
+    // Only run on client-side
+    if (typeof window === 'undefined') return
+
     // Listen for beforeinstallprompt event
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault()
@@ -48,15 +51,17 @@ export default function PWAInstall() {
 
   const handleDismiss = () => {
     setShowInstallPrompt(false)
-    localStorage.setItem('pwa-install-dismissed', 'true')
-    // Allow showing again after 7 days
-    setTimeout(() => {
-      localStorage.removeItem('pwa-install-dismissed')
-    }, 7 * 24 * 60 * 60 * 1000)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('pwa-install-dismissed', 'true')
+      // Allow showing again after 7 days
+      setTimeout(() => {
+        localStorage.removeItem('pwa-install-dismissed')
+      }, 7 * 24 * 60 * 60 * 1000)
+    }
   }
 
-  // Show mini icon if prompt was dismissed
-  const dismissed = localStorage.getItem('pwa-install-dismissed')
+  // Show mini icon if prompt was dismissed (only on client-side)
+  const dismissed = typeof window !== 'undefined' ? localStorage.getItem('pwa-install-dismissed') : null
   
   if (!showInstallPrompt && dismissed && deferredPrompt) {
     return (
