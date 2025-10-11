@@ -1,0 +1,123 @@
+═══════════════════════════════════════════════════════
+   ADMIN_CHAT_ID QO'SHISH YO'RIQNOMASI
+═══════════════════════════════════════════════════════
+
+QADAMA 1: CHAT ID OLISH
+─────────────────────────────────────────────────────
+
+1. Telegram'da @evolvoai_bot ga o'ting
+   https://t.me/evolvoai_bot
+
+2. Botga quyidagi buyruqlardan birini yuboring:
+   
+   /chatid
+   
+   yoki
+   
+   /start
+
+3. Bot sizga javob qaytaradi:
+   
+   ✅ Sizning ma'lumotlaringiz:
+   👤 Ism: Your Name
+   🆔 Chat ID: 1234567890
+   
+4. Chat ID raqamini nusxalang (1234567890)
+
+
+QADAMA 2: .ENV FAYLINI YANGILASH
+─────────────────────────────────────────────────────
+
+1. .env faylini oching:
+   
+   c:\Users\user\evolvoai-project\backend\.env
+
+2. ADMIN_CHAT_ID qatorini qidiring yoki qo'shing:
+   
+   Eski:
+   ADMIN_CHAT_ID=
+   
+   Yangi (sizning Chat ID'ingiz bilan):
+   ADMIN_CHAT_ID=1234567890
+
+3. Faylni saqlang (Ctrl+S)
+
+
+MISOL .ENV FAYLI:
+─────────────────────────────────────────────────────
+
+PORT=5000
+NODE_ENV=development
+
+MONGODB_URI=mongodb+srv://...
+GEMINI_API_KEY=AIzaSyDwhFtwAhRpdcE3...
+
+TELEGRAM_BOT_TOKEN=8258225391:AAH-...
+TELEGRAM_CHANNEL_ID=-1002799814854
+ADMIN_CHAT_ID=1234567890         <--- SHU QATOR
+
+JWT_SECRET=your_jwt_secret_here
+JWT_EXPIRE=30d
+
+FRONTEND_URL=http://localhost:3000
+
+
+QADAMA 3: BACKEND'NI QAYTA ISHGA TUSHIRISH
+─────────────────────────────────────────────────────
+
+1. Backend terminalini toping
+2. Ctrl+C bosing (to'xtatish)
+3. Qayta ishga tushiring:
+   
+   cd c:\Users\user\evolvoai-project\backend
+   node src/server.js
+
+
+QADAMA 4: TEST QILISH
+─────────────────────────────────────────────────────
+
+1. Web saytni oching:
+   http://localhost:3000/contact
+
+2. Kontakt formani to'ldiring va yuboring
+
+3. Telegram'da botda xabar kelishi kerak:
+   
+   🆕 Yangi murojaat!
+   👤 Ism: Test User
+   📧 Email: test@example.com
+   ...
+
+
+═══════════════════════════════════════════════════════
+   TAYYOR! Endi xabarlar botga keladi
+═══════════════════════════════════════════════════════
+
+
+MUAMMOLAR:
+─────────────────────────────────────────────────────
+
+❌ Bot javob bermayapti?
+   - Bot ishlayotganligini tekshiring
+   - /start bosing
+
+❌ Chat ID topa olmayapsizmi?
+   - @userinfobot ga o'ting
+   - /start yuboring
+   - Sizning ID'ingizni ko'rsatadi
+
+❌ Xabar kelmayaptimi?
+   - .env faylini tekshiring
+   - Backend qayta ishga tushganligini tekshiring
+   - Console log'larni tekshiring
+
+
+YORDAM:
+─────────────────────────────────────────────────────
+
+Bot ishlayaptimi?
+   node backend/get-my-chat-id.js
+   
+Keyin Telegram'da /chatid yuboring
+
+═══════════════════════════════════════════════════════

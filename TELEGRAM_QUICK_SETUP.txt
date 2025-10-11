@@ -1,0 +1,132 @@
+═══════════════════════════════════════════════════════
+   TELEGRAM KANALI TEZKOR SOZLASH (5 daqiqa)
+═══════════════════════════════════════════════════════
+
+QADAMA 1: KANAL YARATISH
+─────────────────────────────────────────────────────
+
+1. Telegram'ni oching
+2. Menu → New Channel (yangi kanal)
+3. Kanal nomini kiriting:
+   
+   Nom: EvolvoAI IT Blog
+   
+4. Tavsif (ixtiyoriy):
+   
+   AI va IT texnologiyalari haqida yangiliklar
+   
+5. "Create" bosing
+
+
+QADAMA 2: KANALNI PUBLIC QILISH
+─────────────────────────────────────────────────────
+
+1. "Channel Type" → PUBLIC ni tanlang
+2. Username kiriting (unique bo'lishi kerak):
+   
+   Username: evolvoai_it_blog
+   
+   Yoki:
+   - evolvoai_news
+   - evolvoai_tech
+   - evolvoai_uzbek
+   
+3. Agar band bo'lsa, boshqa nom sinab ko'ring
+4. "Save" bosing
+
+
+QADAMA 3: BOT'NI ADMIN QILISH
+─────────────────────────────────────────────────────
+
+1. Yaratilgan kanalda: Menu → Manage Channel
+2. "Administrators" → "Add Administrator"
+3. Qidiruv qatoriga yozing: @evolvoai_bot
+4. Bot'ni tanlang
+5. Quyidagi huquqlarni yoqing:
+   
+   ✅ Post Messages (xabar yuborish)
+   ✅ Edit Messages (xabar tahrirlash)
+   
+6. "Save" bosing
+
+
+QADAMA 4: .ENV FAYLINI YANGILASH
+─────────────────────────────────────────────────────
+
+1. .env faylini oching
+2. TELEGRAM_CHANNEL_ID qatorini toping
+3. Shunday o'zgartiring:
+
+   Eski:
+   TELEGRAM_CHANNEL_ID=-1003195848100
+   
+   Yangi (sizning username'ingiz bilan):
+   TELEGRAM_CHANNEL_ID=@evolvoai_it_blog
+   
+   MUHIM: @ belgisini qo'yishni unutmang!
+
+4. Faylni saqlang (Ctrl+S)
+
+
+QADAMA 5: BACKEND'NI QAYTA ISHGA TUSHIRISH
+─────────────────────────────────────────────────────
+
+1. Backend terminalini toping
+2. Ctrl+C bosing (to'xtatish)
+3. Qayta ishga tushiring:
+   
+   node src/server.js
+
+
+QADAMA 6: TEST QILISH
+─────────────────────────────────────────────────────
+
+Terminalda yozing:
+
+   node check-telegram.js
+
+Agar hammasi to'g'ri bo'lsa:
+✅ Kanal topiladi
+✅ Test xabar yuboriladi
+✅ Test rasm yuboriladi
+
+
+═══════════════════════════════════════════════════════
+   TAYYOR! Endi blog postlar avtomatik yuboriladi
+═══════════════════════════════════════════════════════
+
+
+MISOL .ENV FAYLI:
+─────────────────────────────────────────────────────
+
+PORT=5000
+NODE_ENV=development
+
+MONGODB_URI=mongodb+srv://...
+GEMINI_API_KEY=AIzaSyAYLjXv_AABH0eKXn-QBb15mAoxXQgmwQM
+
+TELEGRAM_BOT_TOKEN=8258225391:AAH-xxxxxxxxxxxxxxxxxxxxxxxxxxx
+TELEGRAM_CHANNEL_ID=@evolvoai_it_blog
+ADMIN_CHAT_ID=123456789
+
+JWT_SECRET=your_jwt_secret_here_minimum_32_characters_long
+JWT_EXPIRE=30d
+
+FRONTEND_URL=http://localhost:3000
+
+
+═══════════════════════════════════════════════════════
+
+AGAR MUAMMO BO'LSA:
+
+❌ "chat not found" → Channel ID noto'g'ri
+   ✅ @ belgisini qo'yganligingizni tekshiring
+   ✅ Username to'g'riligini tekshiring
+
+❌ "bot is not a member" → Bot kanalga qo'shilmagan
+   ✅ Bot'ni kanalga admin qilib qo'shing
+
+❌ "forbidden" → Bot admin emas
+   ✅ Bot'ga "Post Messages" huquqini bering
+
+═══════════════════════════════════════════════════════

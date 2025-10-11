@@ -1,0 +1,205 @@
+═══════════════════════════════════════════════════════════════
+   🚀 TEZKOR DEPLOY - Vercel & Render
+═══════════════════════════════════════════════════════════════
+
+QADAMMA-QADAM DEPLOY YO'RIQNOMASI
+
+═══════════════════════════════════════════════════════════════
+   1. MONGODB ATLAS (5 daqiqa)
+═══════════════════════════════════════════════════════════════
+
+✅ Tayyor bo'lsa o'tkazing!
+
+URL: https://www.mongodb.com/cloud/atlas/register
+
+Qadamlar:
+  1. Account yaratish (Email)
+  2. Free Cluster (M0)
+  3. Database User: evolvoai-user
+  4. IP Whitelist: 0.0.0.0/0 (Allow all)
+  5. Connection String olish
+
+Connection String:
+  mongodb+srv://evolvoai-user:<password>@cluster.mongodb.net/evolvoai-db
+
+
+═══════════════════════════════════════════════════════════════
+   2. BACKEND - RENDER (10 daqiqa)
+═══════════════════════════════════════════════════════════════
+
+A. GitHub Repository Yaratish:
+   ─────────────────────────────────────────────────────────
+   1. GitHub'ga o'ting
+   2. New Repository: evolvoai-backend
+   3. Public yoki Private
+
+B. Local Git Setup:
+   ─────────────────────────────────────────────────────────
+   cd backend
+   git init
+   git add .
+   git commit -m "Deploy to Render"
+   git branch -M main
+   git remote add origin https://github.com/YOUR_USERNAME/evolvoai-backend.git
+   git push -u origin main
+
+C. Render'da Deploy:
+   ─────────────────────────────────────────────────────────
+   URL: https://render.com
+   
+   1. Sign up with GitHub
+   2. New → Web Service
+   3. Connect: evolvoai-backend
+   
+   Settings:
+     Name: evolvoai-backend
+     Region: Frankfurt
+     Branch: main
+     Build: npm install
+     Start: node src/server.js
+     Plan: Free
+
+D. Environment Variables:
+   ─────────────────────────────────────────────────────────
+   
+   NODE_ENV=production
+   PORT=5000
+   MONGODB_URI=mongodb+srv://...
+   GEMINI_API_KEY=AIzaSy...
+   TELEGRAM_BOT_TOKEN=8258225391:AAF...
+   TELEGRAM_CHANNEL_ID=-1002799814854
+   ADMIN_CHAT_ID=8325332204
+   JWT_SECRET=your_32_char_secret
+   JWT_EXPIRE=30d
+   FRONTEND_URL=https://your-app.vercel.app
+
+E. Deploy:
+   ─────────────────────────────────────────────────────────
+   Create Web Service → Wait 5-10 min
+   
+   ✅ Backend URL: https://evolvoai-backend.onrender.com
+
+
+═══════════════════════════════════════════════════════════════
+   3. FRONTEND - VERCEL (10 daqiqa)
+═══════════════════════════════════════════════════════════════
+
+A. GitHub Repository Yaratish:
+   ─────────────────────────────────────────────────────────
+   1. GitHub'ga o'ting
+   2. New Repository: evolvoai-frontend
+   3. Public yoki Private
+
+B. Local Git Setup:
+   ─────────────────────────────────────────────────────────
+   cd frontend
+   git init
+   git add .
+   git commit -m "Deploy to Vercel"
+   git branch -M main
+   git remote add origin https://github.com/YOUR_USERNAME/evolvoai-frontend.git
+   git push -u origin main
+
+C. Vercel'da Deploy:
+   ─────────────────────────────────────────────────────────
+   URL: https://vercel.com
+   
+   1. Sign up with GitHub
+   2. Add New → Project
+   3. Import: evolvoai-frontend
+   4. Framework: Next.js (auto-detect)
+
+D. Environment Variables:
+   ─────────────────────────────────────────────────────────
+   
+   NEXT_PUBLIC_API_URL=https://evolvoai-backend.onrender.com/api
+   NEXT_PUBLIC_SITE_URL=https://your-app.vercel.app
+   NEXT_PUBLIC_TELEGRAM_CHANNEL=https://t.me/evolvoai_news
+
+E. Deploy:
+   ─────────────────────────────────────────────────────────
+   Deploy → Wait 3-5 min
+   
+   ✅ Frontend URL: https://evolvoai-frontend.vercel.app
+
+
+═══════════════════════════════════════════════════════════════
+   4. FINAL SETUP
+═══════════════════════════════════════════════════════════════
+
+A. Backend Environment Update:
+   ─────────────────────────────────────────────────────────
+   Render'da FRONTEND_URL'ni yangilang:
+   
+   FRONTEND_URL=https://evolvoai-frontend.vercel.app
+   
+   Manual Deploy → Deploy latest commit
+
+B. Test Qilish:
+   ─────────────────────────────────────────────────────────
+   
+   Backend Health:
+     https://evolvoai-backend.onrender.com/api/health
+   
+   Frontend:
+     https://evolvoai-frontend.vercel.app
+   
+   Chatbot:
+     https://evolvoai-frontend.vercel.app (chatbot tugmasi)
+   
+   Blog:
+     https://evolvoai-frontend.vercel.app/blog
+
+
+═══════════════════════════════════════════════════════════════
+   ✅ DEPLOY TAYYOR!
+═══════════════════════════════════════════════════════════════
+
+LINKS:
+
+Frontend: https://evolvoai-frontend.vercel.app
+Backend:  https://evolvoai-backend.onrender.com
+Database: MongoDB Atlas
+Bot:      @evolvoai_bot
+
+KEYINGI QADAMLAR:
+
+1. Custom Domain:
+   - Vercel: Settings → Domains
+   - Render: Settings → Custom Domain
+
+2. Monitoring:
+   - Render Logs
+   - Vercel Analytics
+   - MongoDB Metrics
+
+3. Optimizatsiya:
+   - CDN caching
+   - Image optimization
+   - Database indexes
+
+
+MUAMMOLAR:
+
+❌ 503 Error (Render):
+   - Free tier sleep after 15min
+   - First request: 30-60 sec
+   - Solution: Paid plan or keep-alive
+
+❌ CORS Error:
+   - Check FRONTEND_URL in backend
+   - Verify NEXT_PUBLIC_API_URL in frontend
+
+❌ Database Connection:
+   - Check MongoDB Atlas IP whitelist
+   - Verify connection string
+
+
+BATAFSIL QOLLANMA:
+
+DEPLOY_VERCEL_RENDER.md faylini o'qing
+
+
+═══════════════════════════════════════════════════════════════
+
+Omad! 🚀

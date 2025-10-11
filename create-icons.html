@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create PWA Icons - EvolvoAI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      max-width: 600px;
+      text-align: center;
+    }
+    h1 { color: #667eea; margin-bottom: 20px; }
+    .preview { margin: 30px 0; }
+    .preview canvas {
+      border: 2px solid #ddd;
+      border-radius: 15px;
+      margin: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 10px;
+      transition: transform 0.3s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .success {
+      background: #10b981;
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 20px;
+      display: none;
+    }
+    .info {
+      background: #f0f9ff;
+      border-left: 4px solid #667eea;
+      padding: 15px;
+      margin: 20px 0;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 EvolvoAI PWA Icons</h1>
+    <p>Avtomatik icon yaratish va yuklab olish</p>
+    
+    <div class="info">
+      <strong>📋 Yaratilayotgan fayllar:</strong><br>
+      ✅ icon-72x72.png<br>
+      ✅ icon-96x96.png<br>
+      ✅ icon-128x128.png<br>
+      ✅ icon-144x144.png<br>
+      ✅ icon-152x152.png<br>
+      ✅ icon-192x192.png<br>
+      ✅ icon-384x384.png<br>
+      ✅ icon-512x512.png
+    </div>
+    
+    <div class="preview">
+      <canvas id="previewCanvas" width="200" height="200"></canvas>
+      <p><strong>Preview: 200x200</strong></p>
+    </div>
+    
+    <button class="btn" onclick="createIcons()">✨ Iconlarni Yaratish</button>
+    <button class="btn" onclick="downloadAll()" id="downloadBtn" disabled>📥 Barchasini Yuklab Olish</button>
+    
+    <div class="success" id="successMsg">
+      ✅ Iconlar tayyor! "Yuklab Olish" tugmasini bosing.
+    </div>
+    
+    <div class="info" style="margin-top: 30px;">
+      <strong>📁 Qayerga joylashtirish:</strong><br>
+      <code>c:\Users\user\evolvoai-project\frontend\public\</code>
+    </div>
+  </div>
+
+  <script>
+    const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+    const iconData = {};
+
+    // Draw EvolvoAI logo
+    function drawLogo(canvas, size) {
+      const ctx = canvas.getContext('2d');
+      
+      // Clear canvas
+      ctx.clearRect(0, 0, size, size);
+      
+      // Gradient background
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#3B82F6');
+      gradient.addColorStop(1, '#1D4ED8');
+      
+      // Rounded rectangle background
+      const radius = size * 0.2;
+      ctx.fillStyle = gradient;
+      ctx.beginPath();
+      ctx.moveTo(radius, 0);
+      ctx.lineTo(size - radius, 0);
+      ctx.quadraticCurveTo(size, 0, size, radius);
+      ctx.lineTo(size, size - radius);
+      ctx.quadraticCurveTo(size, size, size - radius, size);
+      ctx.lineTo(radius, size);
+      ctx.quadraticCurveTo(0, size, 0, size - radius);
+      ctx.lineTo(0, radius);
+      ctx.quadraticCurveTo(0, 0, radius, 0);
+      ctx.closePath();
+      ctx.fill();
+      
+      // Letter "E"
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = `bold ${size * 0.6}px Arial, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('E', size / 2, size / 2);
+      
+      // Sparkle
+      ctx.fillStyle = '#FCD34D';
+      const sparkleSize = size * 0.08;
+      const sparkleX = size * 0.72;
+      const sparkleY = size * 0.28;
+      
+      // Star shape
+      ctx.beginPath();
+      for (let i = 0; i < 4; i++) {
+        const angle = (Math.PI / 2) * i;
+        const x = sparkleX + Math.cos(angle) * sparkleSize;
+        const y = sparkleY + Math.sin(angle) * sparkleSize;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      
+      // Smaller rotated star
+      ctx.save();
+      ctx.translate(sparkleX, sparkleY);
+      ctx.rotate(Math.PI / 4);
+      ctx.beginPath();
+      for (let i = 0; i < 4; i++) {
+        const angle = (Math.PI / 2) * i;
+        const x = Math.cos(angle) * (sparkleSize * 0.7);
+        const y = Math.sin(angle) * (sparkleSize * 0.7);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Create icons for all sizes
+    function createIcons() {
+      sizes.forEach(size => {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        drawLogo(canvas, size);
+        iconData[size] = canvas;
+      });
+      
+      // Update preview
+      const previewCanvas = document.getElementById('previewCanvas');
+      drawLogo(previewCanvas, 200);
+      
+      // Show success
+      document.getElementById('successMsg').style.display = 'block';
+      document.getElementById('downloadBtn').disabled = false;
+    }
+
+    // Download all icons
+    function downloadAll() {
+      sizes.forEach((size, index) => {
+        setTimeout(() => {
+          const canvas = iconData[size];
+          canvas.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `icon-${size}x${size}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          }, 'image/png');
+        }, index * 200); // 200ms delay between downloads
+      });
+      
+      alert('📥 Barcha iconlar yuklab olinmoqda!\n\nYuklanmalar papkangizni tekshiring va barcha fayllarni:\nc:\\Users\\user\\evolvoai-project\\frontend\\public\\\n\nga ko\'chiring.');
+    }
+
+    // Auto-create on load
+    window.onload = () => {
+      createIcons();
+    };
+  </script>
+</body>
+</html>
