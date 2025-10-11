@@ -194,7 +194,7 @@ export default function Chatbot() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 bg-gradient-to-r from-primary-600 to-blue-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all z-50 group"
+            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 bg-gradient-to-r from-primary-600 to-blue-600 text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-xl transition-all z-50 group"
           >
             <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
             <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full animate-pulse" />
@@ -211,19 +211,19 @@ export default function Chatbot() {
               opacity: 1, 
               y: 0, 
               scale: 1,
-              height: isMinimized ? '60px' : '600px'
+              height: isMinimized ? '60px' : 'auto'
             }}
             exit={{ opacity: 0, y: 100, scale: 0.8 }}
-            className="fixed bottom-6 right-6 w-96 bg-white rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden"
+            className="fixed bottom-4 right-4 left-4 sm:left-auto sm:bottom-6 sm:right-6 sm:w-96 max-w-full bg-white rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="bg-gradient-to-r from-primary-600 to-blue-600 text-white p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                  <MessageCircle className="w-5 h-5" />
+            <div className="bg-gradient-to-r from-primary-600 to-blue-600 text-white p-3 sm:p-4 flex items-center justify-between">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center">
+                  <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">EvolvoAI Assistant</h3>
+                  <h3 className="font-semibold text-sm sm:text-base">EvolvoAI Assistant</h3>
                   <p className="text-xs text-blue-100">Onlayn</p>
                 </div>
               </div>
@@ -246,20 +246,20 @@ export default function Chatbot() {
             {!isMinimized && (
               <>
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+                <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 h-[calc(100vh-280px)] sm:h-[450px] max-h-[calc(100vh-280px)]">
                   {messages.map((message, index) => (
                     <div
                       key={index}
                       className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                     >
                       <div
-                        className={`max-w-[80%] rounded-2xl px-4 py-2 ${
+                        className={`max-w-[85%] sm:max-w-[80%] rounded-2xl px-3 py-2 sm:px-4 ${
                           message.role === 'user'
                             ? 'bg-primary-600 text-white rounded-br-none'
                             : 'bg-white text-gray-800 shadow-sm rounded-bl-none'
                         }`}
                       >
-                        <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                        <p className="text-xs sm:text-sm whitespace-pre-wrap break-words">{message.content}</p>
                         <div className="flex items-center justify-between gap-2 mt-1">
                           <p className={`text-xs ${message.role === 'user' ? 'text-blue-100' : 'text-gray-400'}`}>
                             {message.timestamp.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })}
@@ -290,11 +290,11 @@ export default function Chatbot() {
 
                   {isTyping && (
                     <div className="flex justify-start">
-                      <div className="bg-white text-gray-800 shadow-sm rounded-2xl rounded-bl-none px-4 py-3">
+                      <div className="bg-white text-gray-800 shadow-sm rounded-2xl rounded-bl-none px-3 py-2 sm:px-4 sm:py-3">
                         <div className="flex gap-1">
-                          <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                          <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                          <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                          <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                         </div>
                       </div>
                     </div>
@@ -305,14 +305,14 @@ export default function Chatbot() {
 
                 {/* Quick Questions */}
                 {messages.length === 1 && (
-                  <div className="px-4 py-2 border-t bg-white">
+                  <div className="px-3 py-2 sm:px-4 border-t bg-white">
                     <p className="text-xs text-gray-500 mb-2">Tez savollar:</p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                       {quickQuestions.map((question, index) => (
                         <button
                           key={index}
                           onClick={() => handleQuickQuestion(question)}
-                          className="text-xs px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-full text-gray-700 transition"
+                          className="text-xs px-2.5 py-1 sm:px-3 bg-gray-100 hover:bg-gray-200 rounded-full text-gray-700 transition"
                         >
                           {question}
                         </button>
@@ -322,7 +322,7 @@ export default function Chatbot() {
                 )}
 
                 {/* Input */}
-                <div className="p-4 border-t bg-white">
+                <div className="p-3 sm:p-4 border-t bg-white">
                   <div className="flex gap-2">
                     <input
                       ref={inputRef}
@@ -331,14 +331,14 @@ export default function Chatbot() {
                       onChange={(e) => setInputMessage(e.target.value)}
                       onKeyPress={handleKeyPress}
                       placeholder="Xabar yozing..."
-                      className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      className="flex-1 px-3 py-2 sm:px-4 text-sm sm:text-base border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     />
                     <button
                       onClick={handleSendMessage}
                       disabled={!inputMessage.trim() || isTyping}
-                      className="bg-primary-600 text-white p-2 rounded-full hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                      className="bg-primary-600 text-white p-2 sm:p-2.5 rounded-full hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition flex-shrink-0"
                     >
-                      <Send className="w-5 h-5" />
+                      <Send className="w-4 h-4 sm:w-5 sm:h-5" />
                     </button>
                   </div>
                 </div>
