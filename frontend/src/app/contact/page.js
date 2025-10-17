@@ -34,15 +34,15 @@ export default function ContactPage() {
   ]
 
   return (
-    <div className="py-20 bg-gray-50">
+    <div className="py-20 bg-gray-50 dark:bg-slate-900">
       <div className="container-custom">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Bog'laning</h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 dark:text-white">Bog'laning</h1>
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
             Loyihangiz haqida gaplashaylikmi? Biz sizning savollaringizga javob berishga va yechim topishga tayyormiz
           </p>
         </motion.div>
@@ -56,8 +56,8 @@ export default function ContactPage() {
           >
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl font-bold mb-4">Biz bilan bog'laning</h2>
-                <p className="text-gray-600 mb-8">
+                <h2 className="text-2xl font-bold mb-4 dark:text-white">Biz bilan bog'laning</h2>
+                <p className="text-gray-600 dark:text-gray-300 mb-8">
                   Har qanday savollaringiz bo'lsa, biz bilan bog'laning. Biz har doim sizga yordam berishga tayyormiz va tez orada javob beramiz.
                 </p>
               </div>
@@ -70,13 +70,13 @@ export default function ContactPage() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 + index * 0.1 }}
-                      className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all"
+                      className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md hover:shadow-lg transition-all"
                     >
                       <div className="bg-primary-100 w-12 h-12 rounded-lg flex items-center justify-center mb-4">
                         <Icon className="w-6 h-6 text-primary-600" />
                       </div>
-                      <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
-                      <p className="text-gray-600">{item.value}</p>
+                      <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{item.title}</h3>
+                      <p className="text-gray-600 dark:text-gray-300">{item.value}</p>
                     </motion.div>
                   )
 
@@ -91,14 +91,14 @@ export default function ContactPage() {
               </div>
 
               {/* Additional Info */}
-              <div className="bg-gradient-to-br from-primary-50 to-blue-50 p-8 rounded-xl mt-8">
+              <div className="bg-gradient-to-br from-primary-50 to-blue-50 dark:from-slate-800 dark:to-slate-700 p-8 rounded-xl mt-8">
                 <div className="flex items-start gap-4">
                   <div className="bg-primary-100 p-3 rounded-lg">
                     <MessageCircle className="w-6 h-6 text-primary-600" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-900 mb-2">Tezkor javob</h3>
-                    <p className="text-gray-600 mb-4">
+                    <h3 className="font-bold text-gray-900 dark:text-white mb-2">Tezkor javob</h3>
+                    <p className="text-gray-600 dark:text-gray-300 mb-4">
                       Telegram orqali biz bilan bog'lansangiz, tezroq javob olasiz va real vaqtda suhbatlashishingiz mumkin.
                     </p>
                     <Link
@@ -114,8 +114,8 @@ export default function ContactPage() {
               </div>
 
               {/* Social Media Links */}
-              <div className="bg-white p-8 rounded-xl shadow-md mt-8">
-                <h3 className="font-bold text-gray-900 mb-6 text-center">Ijtimoiy tarmoqlarda kuzating</h3>
+              <div className="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-md mt-8">
+                <h3 className="font-bold text-gray-900 dark:text-white mb-6 text-center">Ijtimoiy tarmoqlarda kuzating</h3>
                 <div className="flex justify-center">
                   <SocialLinks variant="contact" size="lg" />
                 </div>
@@ -139,7 +139,7 @@ export default function ContactPage() {
           whileInView={{ opacity: 1, y: 0 }}
           className="mt-20"
         >
-          <h2 className="text-3xl font-bold text-center mb-12">Tez-tez so'raladigan savollar</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 dark:text-white">Tez-tez so'raladigan savollar</h2>
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {[
               {
@@ -159,9 +159,9 @@ export default function ContactPage() {
                 a: 'Biz eng zamonaviy va ishonchli texnologiyalardan foydalanamiz: React, Next.js, Node.js, Python va boshqalar.'
               }
             ].map((item, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-md">
-                <h3 className="font-bold text-lg mb-2 text-gray-900">{item.q}</h3>
-                <p className="text-gray-600">{item.a}</p>
+              <div key={index} className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md">
+                <h3 className="font-bold text-lg mb-2 text-gray-900 dark:text-white">{item.q}</h3>
+                <p className="text-gray-600 dark:text-gray-300">{item.a}</p>
               </div>
             ))}
           </div>
