@@ -120,27 +120,36 @@ router.get('/portfolio', protect, async (req, res) => {
 // Admin: Yangi portfolio yaratish
 router.post('/portfolio', protect, async (req, res) => {
   try {
+    console.log('Portfolio yaratish request:', req.body);
     const { title, slug, description, category, technologies, images, mainImage, liveUrl, githubUrl, featured, status, order, client, duration } = req.body;
+    
+    // Validation
+    if (!title || !slug) {
+      return res.status(400).json({ error: 'Title va slug majburiy' });
+    }
+    
     const newPortfolio = new Portfolio({ 
       title, 
       slug,
       description, 
       category, 
       technologies, 
-      images,
-      mainImage,
-      liveUrl,
-      githubUrl,
-      featured: featured || false,
-      status: status || 'completed',
+      images, 
+      mainImage, 
+      liveUrl, 
+      githubUrl, 
+      featured: featured || false, 
+      status: status || 'draft',
       order: order || 0,
       client,
       duration
     });
     await newPortfolio.save();
+    console.log('Portfolio yaratildi:', newPortfolio._id);
     res.status(201).json(newPortfolio);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error('Portfolio yaratishda xatolik:', error);
+    res.status(400).json({ error: error.message, details: error.errors });
   }
 });
 
