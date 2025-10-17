@@ -120,7 +120,7 @@ export default function PushNotifications() {
     return (
       <button
         onClick={subscription ? unsubscribeUser : subscribeUser}
-        className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all z-[100] hover:scale-110 group"
+        className="fixed bottom-24 right-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all z-[100] hover:scale-110 group"
         aria-label={subscription ? 'Bildirishnomalarni o\'chirish' : 'Bildirishnomalarni yoqish'}
       >
         {subscription ? (
@@ -138,7 +138,7 @@ export default function PushNotifications() {
   if (!showPrompt || permission !== 'default') return null
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-auto sm:max-w-sm bg-white rounded-xl shadow-2xl p-4 z-[100] border border-gray-200">
+    <div className="fixed bottom-24 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-auto sm:max-w-sm bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-4 z-[100] border border-gray-200 dark:border-slate-700">
       <button
         onClick={handleDismiss}
         className="absolute top-2 right-2 p-1 text-gray-400 hover:text-gray-600 transition"
@@ -152,10 +152,10 @@ export default function PushNotifications() {
           <Bell className="w-6 h-6 text-blue-600" />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-gray-900 mb-1">
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
             🔔 Bildirishnomalar
           </h3>
-          <p className="text-sm text-gray-600 mb-3">
+          <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
             Eng yangi maqolalar va yangiliklar haqida xabardor bo'ling!
           </p>
           <div className="flex gap-2">

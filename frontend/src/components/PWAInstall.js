@@ -67,7 +67,7 @@ export default function PWAInstall() {
     return (
       <button
         onClick={() => setShowInstallPrompt(true)}
-        className="fixed top-4 left-4 sm:top-6 sm:left-6 bg-gradient-to-r from-primary-600 to-blue-600 text-white p-2.5 sm:p-3 rounded-full shadow-lg hover:shadow-xl transition-all z-[55] hover:scale-110 group"
+        className="fixed top-4 right-4 sm:top-6 sm:right-6 bg-gradient-to-r from-primary-600 to-blue-600 text-white p-2.5 sm:p-3 rounded-full shadow-lg hover:shadow-xl transition-all z-[90] hover:scale-110 group"
         aria-label="PWA o'rnatish"
       >
         <Download className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -81,7 +81,7 @@ export default function PWAInstall() {
   if (!showInstallPrompt) return null
 
   return (
-    <div className="fixed top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-auto sm:max-w-sm md:max-w-md bg-white rounded-xl shadow-2xl p-4 z-[60] border border-gray-200 animate-slide-down">
+    <div className="fixed top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-auto sm:max-w-sm md:max-w-md bg-white dark:bg-slate-800 rounded-xl shadow-2xl p-4 z-[90] border border-gray-200 dark:border-slate-700 animate-slide-down">
       <button
         onClick={handleDismiss}
         className="absolute top-2 right-2 p-1 text-gray-400 hover:text-gray-600 transition"
@@ -95,10 +95,10 @@ export default function PWAInstall() {
           <Download className="w-5 h-5 sm:w-6 sm:h-6 text-primary-600" />
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-1 text-sm sm:text-base">
             📱 Ilovani O'rnating
           </h3>
-          <p className="text-xs sm:text-sm text-gray-600 mb-3">
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-3">
             EvolvoAI'ni telefoningizga o'rnating va offline rejimda ishlating!
           </p>
           <div className="flex gap-2">
