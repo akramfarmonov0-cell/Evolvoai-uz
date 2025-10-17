@@ -120,7 +120,7 @@ export default function PushNotifications() {
     return (
       <button
         onClick={subscription ? unsubscribeUser : subscribeUser}
-        className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all z-[55] hover:scale-110 group"
+        className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all z-[100] hover:scale-110 group"
         aria-label={subscription ? 'Bildirishnomalarni o\'chirish' : 'Bildirishnomalarni yoqish'}
       >
         {subscription ? (
@@ -138,7 +138,7 @@ export default function PushNotifications() {
   if (!showPrompt || permission !== 'default') return null
 
   return (
-    <div className="fixed bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-auto sm:max-w-sm bg-white rounded-xl shadow-2xl p-4 z-[60] border border-gray-200">
+    <div className="fixed bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-auto sm:max-w-sm bg-white rounded-xl shadow-2xl p-4 z-[100] border border-gray-200">
       <button
         onClick={handleDismiss}
         className="absolute top-2 right-2 p-1 text-gray-400 hover:text-gray-600 transition"
