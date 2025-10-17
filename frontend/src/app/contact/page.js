@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion'
 import { Mail, Phone, MapPin, Send, MessageCircle } from 'lucide-react'
 import ContactForm from '@/components/ContactForm'
+import SocialLinks from '@/components/SocialLinks'
 import Link from 'next/link'
 
 export default function ContactPage() {
@@ -109,6 +110,14 @@ export default function ContactPage() {
                       Telegram'da ochish
                     </Link>
                   </div>
+                </div>
+              </div>
+
+              {/* Social Media Links */}
+              <div className="bg-white p-8 rounded-xl shadow-md mt-8">
+                <h3 className="font-bold text-gray-900 mb-6 text-center">Ijtimoiy tarmoqlarda kuzating</h3>
+                <div className="flex justify-center">
+                  <SocialLinks variant="contact" size="lg" />
                 </div>
               </div>
             </div>

@@ -5,9 +5,11 @@ import { motion } from 'framer-motion'
 import { Clock, TrendingUp } from 'lucide-react'
 import axios from 'axios'
 
-export default function RecentPosts() {
+export default function RecentPosts({ category, excludeCategory }) {
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(true)
+  // Browser preview uchun to'g'ridan-to'g'ri backend URL
+  const API = 'http://localhost:5000/api'
 
   useEffect(() => {
     fetchPosts()
@@ -15,12 +17,22 @@ export default function RecentPosts() {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts?limit=6`)
-      setPosts(response.data.posts)
+      const params = { limit: 6 };
+      
+      if (category) {
+        params.category = category;
+      }
+      
+      if (excludeCategory) {
+        params.excludeCategory = excludeCategory;
+      }
+
+      const response = await axios.get(`${API}/posts`, { params });
+      setPosts(response.data.posts);
     } catch (error) {
-      console.error('Postlarni yuklashda xato:', error)
+      console.error('Postlarni yuklashda xato:', error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
@@ -48,7 +60,13 @@ export default function RecentPosts() {
       'digital-marketing': 'Digital Marketing',
       'ui-ux-design': 'UI/UX Dizayn',
       'blockchain': 'Blockchain',
-      'iot': 'IoT'
+      'iot': 'IoT',
+      'news': 'Yangiliklar',
+      'technology': 'Texnologiya',
+      'business': 'Biznes',
+      'science': 'Fan',
+      'ai': 'Sun\'iy intellekt',
+      'security': 'Xavfsizlik'
     }
     return labels[category] || category
   }
@@ -83,6 +101,11 @@ export default function RecentPosts() {
                 <span className="text-xs font-semibold text-primary-600 bg-primary-50 px-3 py-1 rounded-full">
                   {getCategoryLabel(post.category)}
                 </span>
+                {post.category === 'news' && post.subcategory && (
+                  <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                    {getCategoryLabel(post.subcategory)}
+                  </span>
+                )}
                 {post.isAIGenerated && (
                   <span className="text-xs font-semibold text-purple-600 bg-purple-50 px-3 py-1 rounded-full flex items-center gap-1">
                     <TrendingUp className="w-3 h-3" />

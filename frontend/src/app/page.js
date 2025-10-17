@@ -6,6 +6,7 @@ import ServiceCard from '@/components/ServiceCard'
 import RecentPosts from '@/components/RecentPosts'
 import ContactForm from '@/components/ContactForm'
 import FeaturedPortfolio from '@/components/FeaturedPortfolio'
+import SocialProof from '@/components/SocialProof'
 
 export default function Home() {
   const services = [
@@ -177,6 +178,37 @@ export default function Home() {
         </div>
       </section>
 
+      {/* News Section */}
+      <section className="py-20 bg-white">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="text-center mb-16"
+          >
+            <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-full mb-4">
+              <TrendingUp className="w-4 h-4" />
+              <span className="text-sm font-semibold">Realnews.uz - So'nggi yangiliklar</span>
+            </div>
+            <h2 className="section-title">So'nggi Yangiliklar</h2>
+            <p className="section-subtitle max-w-2xl mx-auto">
+              Texnologiya, biznes va boshqa sohalardagi eng so'nggi yangiliklardan xabardor bo'ling
+            </p>
+          </motion.div>
+
+          <div className="mb-16">
+            <RecentPosts category="news" />
+          </div>
+
+          <div className="text-center mt-12">
+            <Link href="/news" className="btn-primary inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700">
+              Barcha Yangiliklar
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Blog Section */}
       <section className="py-20 bg-gray-50">
         <div className="container-custom">
@@ -189,13 +221,13 @@ export default function Home() {
               <TrendingUp className="w-4 h-4" />
               <span className="text-sm font-semibold">Har kuni yangi maqolalar</span>
             </div>
-            <h2 className="section-title">Blog va Yangiliklar</h2>
+            <h2 className="section-title">Blog</h2>
             <p className="section-subtitle max-w-2xl mx-auto">
               AI yordamida har kuni 15 ta yangi maqola - texnologiya dunyosidagi eng so'nggi yangiliklardan xabardor bo'ling
             </p>
           </motion.div>
 
-          <RecentPosts />
+          <RecentPosts excludeCategory="news" />
 
           <div className="text-center mt-12">
             <Link href="/blog" className="btn-primary inline-flex items-center gap-2">
@@ -203,6 +235,28 @@ export default function Home() {
               <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Social Proof Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="text-center mb-16"
+          >
+            <div className="inline-flex items-center gap-2 bg-green-50 text-green-600 px-4 py-2 rounded-full mb-4">
+              <TrendingUp className="w-4 h-4" />
+              <span className="text-sm font-semibold">Mijozlarimiz bizni tanlaydi</span>
+            </div>
+            <h2 className="section-title">Bizga Ishonch</h2>
+            <p className="section-subtitle max-w-2xl mx-auto">
+              500+ mamnun mijoz, 750+ muvaffaqiyatli loyiha va 4.9 yulduzli reyting - bizning sifatimiz haqida gapiradi
+            </p>
+          </motion.div>
+
+          <SocialProof />
         </div>
       </section>
 

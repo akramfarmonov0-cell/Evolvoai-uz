@@ -38,7 +38,108 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-gray-50 text-gray-900 transition-colors duration-300;
+  }
+  
+  .dark {
+    --color-bg-primary: #0f172a;
+    --color-bg-secondary: #1e293b;
+    --color-text-primary: #f1f5f9;
+    --color-text-secondary: #94a3b8;
+    --color-border: #334155;
+    --color-card-bg: #1e293b;
+    --color-card-shadow: #0f172a;
+    --color-header-bg: #1e293b;
+    --color-footer-bg: #0f172a;
+  }
+  
+  .dark body {
+    @apply bg-slate-900 text-slate-100 transition-colors duration-300;
+  }
+  
+  .dark main {
+    @apply bg-slate-900 transition-colors duration-300;
+  }
+  
+  .light body {
+    @apply bg-gray-50 text-gray-900 transition-colors duration-300;
+  }
+  
+  .light main {
+    @apply bg-gray-50 transition-colors duration-300;
+  }
+  
+  .dark .card {
+    @apply bg-slate-800 text-slate-100 border-slate-700;
+  }
+  
+  .dark .section-title {
+    @apply text-slate-100;
+  }
+  
+  .dark .section-subtitle {
+    @apply text-slate-300;
+  }
+  
+  .dark .btn-secondary {
+    @apply bg-slate-700 hover:bg-slate-600 text-slate-100 border-slate-600;
+  }
+  
+  .dark header {
+    @apply bg-slate-800 border-slate-700 transition-colors duration-300;
+  }
+  
+  .dark footer {
+    @apply bg-slate-900 transition-colors duration-300;
+  }
+  
+  .light header {
+    @apply bg-white border-gray-200 transition-colors duration-300;
+  }
+  
+  .light footer {
+    @apply bg-gray-900 transition-colors duration-300;
+  }
+  
+  /* Dark mode for specific elements */
+  .dark input,
+  .dark textarea,
+  .dark select {
+    @apply bg-slate-800 border-slate-600 text-slate-100 placeholder-slate-400;
+  }
+  
+  .dark input:focus,
+  .dark textarea:focus,
+  .dark select:focus {
+    @apply border-primary-500 ring-primary-500;
+  }
+  
+  .dark .bg-gray-50 {
+    @apply bg-slate-900;
+  }
+  
+  .dark .bg-white {
+    @apply bg-slate-800;
+  }
+  
+  .dark .text-gray-900 {
+    @apply text-slate-100;
+  }
+  
+  .dark .text-gray-700 {
+    @apply text-slate-200;
+  }
+  
+  .dark .text-gray-600 {
+    @apply text-slate-300;
+  }
+  
+  .dark .border-gray-200 {
+    @apply border-slate-700;
+  }
+  
+  .dark .border-gray-300 {
+    @apply border-slate-600;
   }
 }
 

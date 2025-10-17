@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { LayoutDashboard, FileText, Briefcase, Users, Settings } from 'lucide-react'
+import { LayoutDashboard, FileText, Briefcase, Users, Settings, Rss } from 'lucide-react'
 
 export default function AdminDashboard() {
   const router = useRouter()
@@ -58,6 +58,13 @@ export default function AdminDashboard() {
       icon: <Users className="w-6 h-6 text-primary-600" />,
       href: '/admin/contacts',
       count: 'Yangi xabarlar'
+    },
+    {
+      title: 'RSS Yangiliklar',
+      description: 'Tashqi manbalardan yangiliklar olish va AI bilan qayta ishlash',
+      icon: <Rss className="w-6 h-6 text-primary-600" />,
+      href: '/admin/rss',
+      count: 'Avtomatik'
     },
     {
       title: 'Sozlamalar',

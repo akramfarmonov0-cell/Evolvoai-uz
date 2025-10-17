@@ -7,9 +7,62 @@ function generateSlug(title) {
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-+|-+$/g, '')
     .substring(0, 100);
 }
-const fetch = require('node-fetch');
+
+// Markdown belgilarini sarlavha/annotatsiyadan olib tashlash
+function stripMarkdownInline(text) {
+  if (!text) return '';
+  return text
+    // ![alt](url) yoki [label](url)
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    // Heading va markerlar: # * _ ` ~ > |
+    .replace(/[#*_`~>|]/g, '')
+    // Ortiqcha bo'shliqlar
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+async function generateBatch(newsCount = 7, blogCount = 5) {
+  const results = [];
+  const blogCategoriesPool = CATEGORIES.filter(c => c !== 'news');
+
+  // 7 ta news
+  for (let i = 0; i < newsCount; i++) {
+    try {
+      const r = await generateAndPublishOnePost('news');
+      results.push({ type: 'news', ...r });
+    } catch (e) {
+      results.push({ type: 'news', success: false, error: e.message });
+    }
+    await new Promise(r => setTimeout(r, 1500));
+  }
+
+  // 5 ta blog (bizning sohalar)
+  for (let i = 0; i < blogCount; i++) {
+    try {
+      const category = blogCategoriesPool[Math.floor(Math.random() * blogCategoriesPool.length)];
+      const r = await generateAndPublishOnePost(category);
+      results.push({ type: 'blog', ...r });
+    } catch (e) {
+      results.push({ type: 'blog', success: false, error: e.message });
+    }
+    await new Promise(r => setTimeout(r, 1500));
+  }
+
+  return results;
+}
+const hasGlobalFetch = (typeof globalThis !== 'undefined') && (typeof globalThis.fetch === 'function');
+const __fetch = hasGlobalFetch ? globalThis.fetch : (function() {
+  try { return require('node-fetch'); } catch (_) { return null; }
+})();
+const fetch = (...args) => {
+  if (!__fetch) throw new Error('Fetch is not available in this environment');
+  return __fetch(...args);
+};
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -27,12 +80,45 @@ const CATEGORIES = [
   'digital-marketing',
   'ui-ux-design',
   'blockchain',
-  'iot'];
+  'iot',
+  'news'];
 
 async function generatePost(category) {
   const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
-  const prompt = `
+  // News uchun subkategoriyalarni aniqlash
+  const newsSubcategories = ['technology', 'business', 'science', 'ai', 'security', 'sport', 'uzbekistan', 'world'];
+  const isNewsCategory = category === 'news';
+  
+  let prompt = '';
+  
+  if (isNewsCategory) {
+    const subcategory = newsSubcategories[Math.floor(Math.random() * newsSubcategories.length)];
+    prompt = `
+Siz professional yangiliklar sayti Realnews.uz uchun yangilik yozuvchisisiz. 
+Quyidagi mavzu bo'yicha qiziqarli, ma'lumotli va SEO-optimallashtirilgan yangilik yozing:
+
+Asosiy kategoriya: ${category}
+Subkategoriya: ${subcategory}
+
+Yangilik quyidagi formatda bo'lsin:
+
+SARLAVHA: [50-60 ta belgidan iborat, e'tiborni jalb qiluvchi sarlavha]
+
+QISQACHA MAZMUN: [150-200 ta belgidan iborat qisqacha tavsif]
+
+ASOSIY MATN: [800-1200 ta so'zdan iborat batafsil yangilik. Quyidagi jihatlarni qamrab oling:
+- Mavzuning ahamiyati
+- So'nggi yangiliklar va tendensiyalar
+- Tahlil va sharh
+- Kelajakdagi rivojlanishlar]
+
+TEGLAR: [5-7 ta relevant kalit so'z, vergul bilan ajratilgan]
+
+Eslatma: Yangilik o'zbek tilida, rasmiy-ish uslubida, lekin tushunarliroq yozilsin.
+`;
+  } else {
+    prompt = `
 Siz professional IT kompaniyasi EvolvoAI uchun blog post yozuvchisisiz. 
 Quyidagi mavzu bo'yicha qiziqarli, ma'lumotli va SEO-optimallashtirilgan maqola yozing:
 
@@ -55,6 +141,7 @@ TEGLAR: [5-7 ta relevant kalit so'z, vergul bilan ajratilgan]
 
 Eslatma: Maqola o'zbek tilida, rasmiy-ish uslubida, lekin tushunarliroq yozilsin.
 `;
+  }
 
   try {
     const result = await model.generateContent(prompt);
@@ -73,16 +160,29 @@ Eslatma: Maqola o'zbek tilida, rasmiy-ish uslubida, lekin tushunarliroq yozilsin
       ? tagsMatch[1].split(',').map(tag => tag.trim())
       : [category, 'IT', 'texnologiya', 'EvolvoAI'];
 
-    // Rasm olish
-    const image = await getRandomImage(category);
+    // Belgilarni tozalash (title/excerpt/tags)
+    const cleanTitle = stripMarkdownInline(title);
+    const cleanExcerpt = stripMarkdownInline(excerpt);
+    const cleanTags = tags.map(t => stripMarkdownInline(t)).filter(Boolean);
+
+    // News uchun subkategoriya aniqlash
+    let subcategory = null;
+    if (isNewsCategory) {
+      const subcategoryMatch = response.match(/Subkategoriya:\s*(.+?)(?=\n|$)/i);
+      subcategory = subcategoryMatch ? subcategoryMatch[1].trim() : null;
+    }
+
+    // Rasm olish (unikal bo'lsin)
+    const image = await getUniqueImage(category, subcategory);
 
     return {
-      title,
+      title: cleanTitle,
       content,
       category,
-      excerpt,
-      tags,
-      slug: generateSlug(title),
+      subcategory,
+      excerpt: cleanExcerpt,
+      tags: cleanTags,
+      slug: generateSlug(cleanTitle),
       image
     };
   } catch (error) {
@@ -147,7 +247,7 @@ async function generateAndPublishPosts() {
   return results;
 }
 
-async function getRandomImage(category) {
+async function getRandomImage(category, subcategory = null) {
   try {
     // Kategoriyaga mos qidiruv so'zlari
     const searchQueries = {
@@ -165,10 +265,30 @@ async function getRandomImage(category) {
       'digital-marketing': 'digital marketing social media advertising',
       'ui-ux-design': 'user interface design web design creative',
       'blockchain': 'blockchain cryptocurrency technology digital',
-      'iot': 'internet of things smart devices technology'
+      'iot': 'internet of things smart devices technology',
+      'news': 'latest news technology business science'
     };
 
-    const query = searchQueries[category] || 'technology computer programming';
+    // News subkategoriyalari uchun maxsus so'zlar
+    const newsSubcategoryQueries = {
+      'technology': 'technology news latest gadgets innovation',
+      'business': 'business news finance economy market',
+      'science': 'science news research discovery technology',
+      'ai': 'artificial intelligence machine learning news',
+      'security': 'cybersecurity news technology protection',
+      'sport': 'sports news football soccer tennis olympics',
+      'uzbekistan': 'uzbekistan news tashkent central asia latest',
+      'world': 'world news international global breaking'
+    };
+
+    // Agar news kategoriyasi va subkategoriya mavjud bo'lsa, subkategoriya bo'yicha qidiruv
+    let query = 'technology computer programming'; // default query
+    
+    if (category === 'news' && subcategory && newsSubcategoryQueries[subcategory]) {
+      query = newsSubcategoryQueries[subcategory];
+    } else if (searchQueries[category]) {
+      query = searchQueries[category];
+    }
     
     const response = await fetch(
       `https://api.unsplash.com/photos/random?query=${encodeURIComponent(query)}&client_id=${process.env.UNSPLASH_ACCESS_KEY}`
@@ -181,7 +301,59 @@ async function getRandomImage(category) {
   }
 }
 
+// Unikal rasm olish: avvalgi postlarda ishlatilmagan URL qaytaradi
+async function getUniqueImage(category, subcategory = null) {
+  const attempts = 8;
+  for (let i = 0; i < attempts; i++) {
+    const url = await getRandomImage(category, subcategory);
+    if (!url) continue;
+    try {
+      const exists = await Post.exists({ image: url });
+      if (!exists) return url;
+    } catch (_) {}
+    // Rate-limit va takroriylikdan qochish uchun qisqa kutish
+    await new Promise(r => setTimeout(r, 200));
+  }
+  return null;
+}
+
+async function generateAndPublishOnePost(preferredCategory = 'news') {
+  try {
+    const category = preferredCategory || CATEGORIES[Math.floor(Math.random() * CATEGORIES.length)];
+    const postData = await generatePost(category);
+
+    // Slug uniquelikni tekshirish
+    let slug = postData.slug;
+    let counter = 1;
+    while (await Post.findOne({ slug })) {
+      slug = `${postData.slug}-${counter}`;
+      counter++;
+    }
+    postData.slug = slug;
+
+    const post = new Post(postData);
+    await post.save();
+
+    // Telegramga yuborish (agar sozlangan bo'lsa)
+    try {
+      const messageId = await sendPostToTelegram(post);
+      post.publishedToTelegram = true;
+      post.telegramMessageId = messageId;
+      await post.save();
+    } catch (telegramError) {
+      console.error('Telegram yuborish xatosi:', telegramError);
+    }
+
+    return { success: true, category, postId: post._id, slug: post.slug };
+  } catch (error) {
+    console.error('❌ Yakka post generatsiya xatosi:', error);
+    return { success: false, error: error.message };
+  }
+}
+
 module.exports = {
   generatePost,
-  generateAndPublishPosts
+  generateAndPublishPosts,
+  generateAndPublishOnePost,
+  generateBatch
 };

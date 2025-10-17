@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Mail, Phone, MapPin, Send } from 'lucide-react'
+import SocialLinks from './SocialLinks'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -71,6 +72,11 @@ export default function Footer() {
                 </li>
               ))}
             </ul>
+          </div>
+
+          {/* Social Links */}
+          <div>
+            <SocialLinks variant="footer" size="md" />
           </div>
 
           {/* Contact Info */}

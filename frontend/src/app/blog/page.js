@@ -13,6 +13,7 @@ export default function BlogPage() {
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+  const API = 'http://localhost:5000/api'
 
   useEffect(() => {
     fetchPosts()
@@ -24,13 +25,15 @@ export default function BlogPage() {
     try {
       const params = {
         page: currentPage,
-        limit: 12
+        limit: 12,
+        excludeCategory: 'news'
       }
       if (selectedCategory) {
         params.category = selectedCategory
+        delete params.excludeCategory
       }
 
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts`, { params })
+      const response = await axios.get(`${API}/posts`, { params })
       setPosts(response.data.posts)
       setTotalPages(response.data.totalPages)
     } catch (error) {
@@ -42,8 +45,9 @@ export default function BlogPage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts/meta/categories`)
-      setCategories(response.data)
+      const response = await axios.get(`${API}/posts/meta/categories`)
+      const filtered = Array.isArray(response.data) ? response.data.filter(c => c.category !== 'news') : []
+      setCategories(filtered)
     } catch (error) {
       console.error('Kategoriyalarni yuklashda xato:', error)
     }
@@ -53,9 +57,12 @@ export default function BlogPage() {
     if (!searchQuery.trim()) return
 
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts/search`, {
-        params: { q: searchQuery }
-      })
+      const searchParams = { q: searchQuery, excludeCategory: 'news' }
+      if (selectedCategory) {
+        searchParams.category = selectedCategory
+        delete searchParams.excludeCategory
+      }
+      const response = await axios.get(`${API}/posts/search`, { params: searchParams })
       setPosts(response.data)
     } catch (error) {
       console.error('Qidirishda xato:', error)
@@ -69,7 +76,8 @@ export default function BlogPage() {
       'chatbots': 'Chatbotlar',
       'automation': 'Avtomatlashtirish',
       'ai-integration': 'AI Integratsiya',
-      'mobile-apps': 'Mobil Ilovalar'
+      'mobile-apps': 'Mobil Ilovalar',
+      'news': 'Yangiliklar'
     }
     return labels[category] || category
   }
@@ -95,7 +103,7 @@ export default function BlogPage() {
             <TrendingUp className="w-4 h-4" />
             <span className="text-sm font-semibold">Har kuni 15 ta yangi maqola</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Blog va Yangiliklar</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Blog</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             AI yordamida yaratilgan yangi maqolalar - texnologiya dunyosidagi so'nggi yangiliklardan xabardor bo'ling
           </p>
@@ -186,6 +194,11 @@ export default function BlogPage() {
                         <span className="text-xs font-semibold text-primary-600 bg-primary-50 px-3 py-1 rounded-full">
                           {getCategoryLabel(post.category)}
                         </span>
+                        {post.category === 'news' && post.subcategory && (
+                          <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                            {getCategoryLabel(post.subcategory)}
+                          </span>
+                        )}
                         {post.isAIGenerated && (
                           <span className="text-xs font-semibold text-purple-600 bg-purple-50 px-3 py-1 rounded-full">
                             AI

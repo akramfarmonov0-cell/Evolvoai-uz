@@ -1,5 +1,6 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
+const path = require('path');
+require(path.join(__dirname, 'backend', 'node_modules', 'dotenv')).config({ path: path.join(__dirname, 'backend', '.env') });
+const mongoose = require(path.join(__dirname, 'backend', 'node_modules', 'mongoose'));
 
 // Post modelini import qilish
 const postSchema = new mongoose.Schema({
@@ -20,8 +21,8 @@ const postSchema = new mongoose.Schema({
 const Post = mongoose.model('Post', postSchema);
 
 // Telegram bot
-const { Telegraf } = require('telegraf');
-const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
+const { Telegraf } = require(path.join(__dirname, 'backend', 'node_modules', 'telegraf'));
+const bot = process.env.TELEGRAM_BOT_TOKEN ? new Telegraf(process.env.TELEGRAM_BOT_TOKEN) : null;
 
 async function createTestPostWithImage() {
   try {
@@ -74,42 +75,46 @@ Sizning biznesingiz uchun AI yechimlarini muhokama qilish uchun biz bilan bog'la
     console.log(`   ID: ${post._id}`);
     console.log(`   Slug: ${post.slug}\n`);
 
-    // Telegram'ga yuborish
-    console.log('📤 Telegram kanalga yuborilmoqda...');
-    try {
-      const escapeMarkdown = (text) => {
-        return text.replace(/[_*[\]()~`>#+=|{}.!-]/g, '\\$&');
-      };
+    // Telegram'ga yuborish (token va kanal id bo'lsa)
+    if (bot && process.env.TELEGRAM_CHANNEL_ID) {
+      console.log('📤 Telegram kanalga yuborilmoqda...');
+      try {
+        const escapeMarkdown = (text) => {
+          return text.replace(/[_*\[\]()~`>#+=|{}.!-]/g, '\\$&');
+        };
 
-      const cleanTags = testPost.tags.map(tag => 
-        '#' + tag.replace(/[^a-zA-Z0-9_]/g, '_').replace(/_{2,}/g, '_')
-      ).join(' ');
+        const cleanTags = testPost.tags.map(tag => 
+          '#' + tag.replace(/[^a-zA-Z0-9_]/g, '_').replace(/_{2,}/g, '_')
+        ).join(' ');
 
-      const caption = 
-        `📝 *${escapeMarkdown(testPost.title)}*\n\n` +
-        `${escapeMarkdown(testPost.excerpt)}\n\n` +
-        `🔗 To'liq o'qish: https://evolvoai.uz/blog/${testPost.slug}\n\n` +
-        `#${testPost.category.replace(/-/g, '_')} ${cleanTags}`;
+        const caption = 
+          `📝 *${escapeMarkdown(testPost.title)}*\n\n` +
+          `${escapeMarkdown(testPost.excerpt)}\n\n` +
+          `🔗 To'liq o'qish: https://evolvoai.uz/blog/${testPost.slug}\n\n` +
+          `#${testPost.category.replace(/-/g, '_')} ${cleanTags}`;
 
-      const result = await bot.telegram.sendPhoto(
-        process.env.TELEGRAM_CHANNEL_ID,
-        testPost.image,
-        { 
-          caption: caption,
-          parse_mode: 'Markdown'
-        }
-      );
+        const result = await bot.telegram.sendPhoto(
+          process.env.TELEGRAM_CHANNEL_ID,
+          testPost.image,
+          { 
+            caption: caption,
+            parse_mode: 'Markdown'
+          }
+        );
 
-      // Telegram ma'lumotlarini saqlash
-      post.publishedToTelegram = true;
-      post.telegramMessageId = result.message_id;
-      await post.save();
+        // Telegram ma'lumotlarini saqlash
+        post.publishedToTelegram = true;
+        post.telegramMessageId = result.message_id;
+        await post.save();
 
-      console.log('✅ Telegram kanalga yuborildi!');
-      console.log(`   Message ID: ${result.message_id}\n`);
-    } catch (telegramError) {
-      console.error('❌ Telegram xatosi:', telegramError.message);
-      console.log('⚠️  Post faqat ma\'lumotlar bazasiga saqlandi\n');
+        console.log('✅ Telegram kanalga yuborildi!');
+        console.log(`   Message ID: ${result.message_id}\n`);
+      } catch (telegramError) {
+        console.error('❌ Telegram xatosi:', telegramError.message);
+        console.log('⚠️  Post faqat ma\'lumotlar bazasiga saqlandi\n');
+      }
+    } else {
+      console.log('ℹ️ Telegram TOKEN yoki CHANNEL_ID yo\'q. Telegram yuborish bosqichi o\'tkazib yuborildi.');
     }
 
     console.log('🎉 Test post muvaffaqiyatli yaratildi!');

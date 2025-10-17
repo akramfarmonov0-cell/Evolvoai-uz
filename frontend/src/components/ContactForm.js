@@ -5,6 +5,7 @@ import { Send, CheckCircle, AlertCircle } from 'lucide-react'
 import axios from 'axios'
 
 export default function ContactForm() {
+  const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -38,7 +39,7 @@ export default function ContactForm() {
     setStatus({ type: '', message: '' })
 
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/contact`, formData)
+      await axios.post(`${API}/contact`, formData)
       
       setStatus({
         type: 'success',

@@ -13,7 +13,8 @@ const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const portfolioRoutes = require('./routes/portfolio');
 const chatbotRoutes = require('./routes/chatbot');
-const { generateAndPublishPosts } = require('./services/contentGenerator');
+const rssRoutes = require('./routes/rss');
+const { generateAndPublishPosts, generateAndPublishOnePost } = require('./services/contentGenerator');
 
 // Telegram Bot Service
 require('./services/telegramService');
@@ -21,10 +22,27 @@ require('./services/telegramService');
 const app = express();
 
 // Middleware
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      connectSrc: ["'self'", "http://localhost:3000", "http://127.0.0.1:3000"],
+      imgSrc: ["'self'", "data:", "https:"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https:"],
+    },
+  },
+}));
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
+  origin: [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    process.env.FRONTEND_URL
+  ].filter(Boolean),
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -33,9 +51,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // MongoDB ulanish
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/evolvoai')
   .then(() => console.log('✅ MongoDB ga muvaffaqiyatli ulandi'))
-  .catch(err => console.error('❌ MongoDB ulanish xatosi:', err));
+  .catch(err => {
+    console.error('❌ MongoDB ulanish xatosi:', err);
+    console.log('⚠️  MongoDB ulanmadi, lekin server ishlamoqda');
+  });
 
 // Routes
 app.use('/api/posts', postRoutes);
@@ -45,19 +66,20 @@ app.use('/api/auth', authRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/rss', rssRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date() });
 });
 
-// Har 6 soatda avtomatik blog post generatsiya (4 marta kuniga)
-cron.schedule('0 */6 * * *', async () => {
-  console.log('🤖 Avtomatik kontent generatsiya boshlandi...');
+// 07:00 dan 19:00 gacha HAR SOATDA 1 ta post (news) generatsiya
+cron.schedule('0 7-19 * * *', async () => {
+  console.log('🕖 Soatlik yangilik generatsiyasi boshlandi (07-19) ...');
   try {
-    await generateAndPublishPosts();
-    console.log('✅ Kontent muvaffaqiyatli yaratildi va nashr qilindi');
+    await generateAndPublishOnePost('news');
+    console.log('✅ Soatlik yangilik yaratildi');
   } catch (error) {
-    console.error('❌ Kontent generatsiya xatosi:', error);
+    console.error('❌ Soatlik generatsiya xatosi:', error);
   }
 });
 
@@ -70,6 +92,19 @@ cron.schedule('30 */6 * * *', async () => {
     console.log('✅ Marketing post yuborildi');
   } catch (error) {
     console.error('❌ Marketing post xatosi:', error);
+  }
+});
+
+// Har 3 soatda RSS yangiliklar olish (kuniga 8 marta)
+cron.schedule('0 */3 * * *', async () => {
+  console.log('📡 RSS yangiliklar olish boshlandi...');
+  const { fetchAndProcessAllRSS } = require('./services/rssService');
+  try {
+    const results = await fetchAndProcessAllRSS();
+    const successCount = results.filter(r => r.success).length;
+    console.log(`✅ RSS jarayoni tugadi: ${successCount} ta yangi post`);
+  } catch (error) {
+    console.error('❌ RSS jarayoni xatosi:', error);
   }
 });
 

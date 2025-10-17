@@ -8,6 +8,7 @@ import Link from 'next/link'
 export default function AIIntegrationServicePage() {
   const [service, setService] = useState(null)
   const [loading, setLoading] = useState(true)
+  const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'
 
   useEffect(() => {
     fetchService()
@@ -15,7 +16,7 @@ export default function AIIntegrationServicePage() {
 
   const fetchService = async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/services/ai-integration`)
+      const response = await axios.get(`${API}/services/ai-integration`)
       setService(response.data)
     } catch (error) {
       console.error('Xizmatni yuklashda xato:', error)

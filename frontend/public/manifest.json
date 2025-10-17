@@ -4,9 +4,13 @@
   "description": "Professional IT xizmatlari O'zbekistonda. Web sayt, Telegram bot, AI chatbot yaratish va biznes avtomatlashtirish",
   "start_url": "/",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
   "background_color": "#ffffff",
   "theme_color": "#3B82F6",
   "orientation": "portrait-primary",
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
   "icons": [
     {
       "src": "/icon-72x72.png",
@@ -93,11 +97,44 @@
       "description": "Biz bilan bog'laning",
       "url": "/contact",
       "icons": [{ "src": "/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Blog",
+      "short_name": "Blog",
+      "description": "Eng yangi maqolalar",
+      "url": "/blog",
+      "icons": [{ "src": "/icon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Yangiliklar",
+      "short_name": "News",
+      "description": "So'nggi yangiliklar",
+      "url": "/news",
+      "icons": [{ "src": "/icon-96x96.png", "sizes": "96x96" }]
     }
   ],
   "prefer_related_applications": false,
   "related_applications": [],
   "scope": "/",
   "lang": "uz-UZ",
-  "dir": "ltr"
+  "dir": "ltr",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  "handle_links": "preferred",
+  "protocol_handlers": [
+    {
+      "protocol": "web+evolvoai",
+      "url": "/?handler=%s"
+    }
+  ],
+  "file_handlers": [
+    {
+      "action": "/",
+      "accept": {
+        "text/plain": [".txt"],
+        "application/json": [".json"]
+      }
+    }
+  ]
 }

@@ -28,7 +28,21 @@ const postSchema = new mongoose.Schema({
       'digital-marketing',
       'ui-ux-design',
       'blockchain',
-      'iot'
+      'iot',
+      'news'
+    ]
+  },
+  subcategory: {
+    type: String,
+    enum: [
+      'technology',
+      'business',
+      'science',
+      'ai',
+      'security',
+      'sport',
+      'uzbekistan',
+      'world'
     ]
   },
   excerpt: {
@@ -60,13 +74,52 @@ const postSchema = new mongoose.Schema({
   },
   isAIGenerated: {
     type: Boolean,
-    default: true
+    default: false
+  },
+  isRewritten: {
+    type: Boolean,
+    default: false
+  },
+  originalSource: {
+    type: String
+  },
+  originalLink: {
+    type: String
+  },
+  metadata: {
+    contentHash: String,
+    originalTitle: String,
+    processedAt: Date,
+    rssSource: String
   },
   image: {
     type: String
   }
 }, {
   timestamps: true
+});
+
+function stripMarkdownInline(text) {
+  if (!text) return '';
+  return text
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/[#*_`~>|]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+postSchema.pre('save', function(next) {
+  if (this.isModified('title') && typeof this.title === 'string') {
+    this.title = stripMarkdownInline(this.title);
+  }
+  if (this.isModified('excerpt') && typeof this.excerpt === 'string') {
+    this.excerpt = stripMarkdownInline(this.excerpt);
+  }
+  if (Array.isArray(this.tags)) {
+    this.tags = this.tags.map(t => stripMarkdownInline(String(t))).filter(Boolean);
+  }
+  next();
 });
 
 // Index for category queries (slug already indexed via unique: true)

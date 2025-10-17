@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "name": "evolvoai-frontend",
+  "builds": [
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "frontend/$1"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://evolvoai-backend.onrender.com/api",
+    "NEXT_PUBLIC_SITE_URL": "https://evolvoai.vercel.app",
+    "NEXT_PUBLIC_TELEGRAM_CHANNEL": "https://t.me/evolvoai_news"
+  },
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_API_URL": "https://evolvoai-backend.onrender.com/api",
+      "NEXT_PUBLIC_SITE_URL": "https://evolvoai.vercel.app"
+    }
+  },
+  "functions": {
+    "frontend/src/app/**": {
+      "maxDuration": 30
+    }
+  }
+}

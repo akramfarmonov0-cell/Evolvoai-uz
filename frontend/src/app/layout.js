@@ -5,16 +5,20 @@ import Footer from '@/components/Footer'
 import Chatbot from '@/components/Chatbot'
 import StructuredData from '@/components/StructuredData'
 import PWAInstall from '@/components/PWAInstall'
+import OfflineIndicator from '@/components/OfflineIndicator'
+import PushNotifications from '@/components/PushNotifications'
+import { ThemeProvider } from '@/contexts/ThemeContext'
+import DarkModeProvider from '@/components/DarkModeProvider'
 
 const inter = Inter({ subsets: ['latin', 'cyrillic'] })
 
 export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://evolvoai-main.vercel.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://evolvoai.uz'),
   title: {
-    default: 'EvolvoAI - Web Sayt, Telegram Bot, AI Chatbot Yaratish | O\'zbekiston',
+    default: 'EvolvoAI - Web Sayt, Telegram Bot, AI Chatbot Yaratish | O\'zbekiston #1',
     template: '%s | EvolvoAI - IT Xizmatlari O\'zbekistonda'
   },
-  description: 'EvolvoAI - O\'zbekistonda zamonaviy web saytlar, telegram botlar, AI chatbotlar yaratish va biznes jarayonlarini avtomatlashtirish. Toshkentda professional IT xizmatlari. ☎️ +998 97 477 12 29',
+  description: 'EvolvoAI - O\'zbekistonda zamonaviy web saytlar, telegram botlar, AI chatbotlar yaratish va biznes jarayonlarini avtomatlashtirish. Toshkentda professional IT xizmatlari. ☎️ +998 97 477 12 29. 500+ mamnun mijozlar.',
   keywords: [
     // Asosiy xizmatlar
     'web sayt yaratish toshkent',
@@ -78,7 +82,7 @@ export const metadata = {
   openGraph: {
     type: 'website',
     locale: 'uz_UZ',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://evolvoai-main.vercel.app',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://evolvoai.uz',
     siteName: 'EvolvoAI - IT Xizmatlari',
     title: 'EvolvoAI - Web Sayt, Telegram Bot, AI Chatbot Yaratish',
     description: 'O\'zbekistonda professional IT xizmatlari: Web sayt yaratish, Telegram bot dasturlash, AI chatbot, biznes avtomatlashtirish. Toshkent. ☎️ +998 97 477 12 29',
@@ -113,9 +117,9 @@ export const metadata = {
     yandex: 'your-yandex-verification-code',
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL || 'https://evolvoai-main.vercel.app',
+    canonical: process.env.NEXT_PUBLIC_SITE_URL || 'https://evolvoai.uz',
     languages: {
-      'uz-UZ': process.env.NEXT_PUBLIC_SITE_URL || 'https://evolvoai-main.vercel.app',
+      'uz-UZ': process.env.NEXT_PUBLIC_SITE_URL || 'https://evolvoai.uz',
     },
   },
   category: 'technology',
@@ -143,13 +147,19 @@ export default function RootLayout({ children }) {
         <StructuredData />
       </head>
       <body className={inter.className}>
-        <Header />
-        <main className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
-        <Chatbot />
-        <PWAInstall />
+        <ThemeProvider>
+          <DarkModeProvider>
+            <Header />
+            <main className="min-h-screen bg-gray-50 dark:bg-slate-900">
+              {children}
+            </main>
+            <Footer />
+            <Chatbot />
+            <PWAInstall />
+            <OfflineIndicator />
+            <PushNotifications />
+          </DarkModeProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

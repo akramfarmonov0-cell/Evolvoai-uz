@@ -8,6 +8,7 @@ import axios from 'axios'
 export default function ServicesPage() {
   const [services, setServices] = useState([])
   const [loading, setLoading] = useState(true)
+  const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'
 
   useEffect(() => {
     fetchServices()
@@ -15,7 +16,7 @@ export default function ServicesPage() {
 
   const fetchServices = async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/services`)
+      const response = await axios.get(`${API}/services`)
       setServices(response.data)
     } catch (error) {
       console.error('Xizmatlarni yuklashda xato:', error)
