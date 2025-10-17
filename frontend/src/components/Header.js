@@ -48,11 +48,11 @@ export default function Header() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center gap-2">
+          <div className="md:hidden flex items-center gap-2">
             <ThemeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -74,7 +74,7 @@ export default function Header() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="text-gray-700 hover:text-primary-600 font-medium transition-colors py-2"
+                    className="text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors py-2"
                   >
                     {link.label}
                   </Link>
