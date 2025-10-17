@@ -426,7 +426,7 @@ async function sendPostToTelegram(post) {
     const caption = 
       `📝 <b>${post.title}</b>\n\n` +
       `${post.excerpt}\n\n` +
-      `🔗 To'liq o'qish: ${process.env.FRONTEND_URL || 'https://evolvoai-main.vercel.app'}/blog/${post.slug}\n\n` +
+      `🔗 To'liq o'qish: ${process.env.FRONTEND_URL || 'https://evolvoai-uz.vercel.app'}/blog/${post.slug}\n\n` +
       `${selectedTags}`;
 
     // Agar rasm mavjud bo'lsa, rasm bilan yuborish
@@ -459,7 +459,7 @@ async function sendPostToTelegram(post) {
       const simpleCaption = 
         `📝 ${post.title}\n\n` +
         `${post.excerpt}\n\n` +
-        `🔗 To'liq o'qish: ${process.env.FRONTEND_URL || 'https://evolvoai-main.vercel.app'}/blog/${post.slug}\n\n` +
+        `🔗 To'liq o'qish: ${process.env.FRONTEND_URL || 'https://evolvoai-uz.vercel.app'}/blog/${post.slug}\n\n` +
         `${selectedTags}`;
 
       if (post.image) {
@@ -504,7 +504,7 @@ Faqat post matnini yozing, qo'shimcha tushuntirish kerak emas.
     // Faqat 2-3 ta hashtag
     const hashtags = ['#EvolvoAI', '#ITxizmatlari'];
     
-    const message = `${postText}\n\n🌐 ${process.env.FRONTEND_URL || 'https://evolvoai-main.vercel.app'}\n📱 @evolvoai\n\n${hashtags.join(' ')}`;
+    const message = `${postText}\n\n🌐 ${process.env.FRONTEND_URL || 'https://evolvoai-uz.vercel.app'}\n📱 @evolvoai\n\n${hashtags.join(' ')}`;
 
     await bot.telegram.sendMessage(
       process.env.TELEGRAM_CHANNEL_ID,
