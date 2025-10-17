@@ -27,7 +27,7 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      connectSrc: ["'self'", "http://localhost:3000", "http://127.0.0.1:3000"],
+      connectSrc: ["'self'", "http://localhost:3000", "http://127.0.0.1:3000", "https://evolvoai-uz.vercel.app", "https://*.vercel.app"],
       imgSrc: ["'self'", "data:", "https:"],
       scriptSrc: ["'self'"],
       styleSrc: ["'self'", "'unsafe-inline'", "https:"],
@@ -38,6 +38,9 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+    'https://evolvoai-uz.vercel.app',
+    'https://evolvoai-uz-akrams-projects-7e39dc3c.vercel.app',
+    /\.vercel\.app$/,
     process.env.FRONTEND_URL
   ].filter(Boolean),
   credentials: true,
