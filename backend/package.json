@@ -6,7 +6,8 @@
     "scripts": {
         "start": "node src/server.js",
         "dev": "nodemon src/server.js",
-        "test": "node test-content-generator.js"
+        "test": "node test-content-generator.js",
+        "seed:portfolio": "node src/scripts/seedPortfolio.js"
     },
     "dependencies": {
         "@google/generative-ai": "^0.2.0",
