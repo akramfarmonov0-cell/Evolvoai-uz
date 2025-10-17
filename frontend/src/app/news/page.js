@@ -4,11 +4,11 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Search, Filter, Clock, TrendingUp } from 'lucide-react'
 import axios from 'axios'
+import { API_URL } from '@/lib/config'
 import NewsCard from '@/components/NewsCard'
 
 export default function NewsPage() {
   const [posts, setPosts] = useState([])
-  const API = 'http://localhost:5000/api'
   const [categories] = useState([
     { id: 'all', name: 'Barcha yangiliklar' },
     { id: 'technology', name: 'Texnologiya' },
@@ -43,7 +43,7 @@ export default function NewsPage() {
         params.subcategory = selectedCategory
       }
 
-      const response = await axios.get(`${API}/posts`, { params })
+      const response = await axios.get(`${API_URL}/posts`, { params })
       setPosts(response.data.posts)
       setTotalPages(response.data.totalPages)
     } catch (error) {
@@ -57,7 +57,7 @@ export default function NewsPage() {
     if (!searchQuery.trim()) return
 
     try {
-      const response = await axios.get(`${API}/posts/search`, {
+      const response = await axios.get(`${API_URL}/posts/search`, {
         params: { q: searchQuery, category: 'news' }
       })
       setPosts(response.data)

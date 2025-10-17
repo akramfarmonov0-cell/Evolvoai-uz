@@ -8,10 +8,10 @@ import ReactMarkdown from 'react-markdown'
 import axios from 'axios'
 import BlogPostStructuredData from '@/components/BlogPostStructuredData'
 import SocialShare from '@/components/SocialShare'
+import { API_URL } from '@/lib/config'
 
 export default function BlogPostPage() {
   const params = useParams()
-  const API = 'http://localhost:5000/api'
   const [post, setPost] = useState(null)
   const [relatedPosts, setRelatedPosts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -25,12 +25,12 @@ export default function BlogPostPage() {
 
   const fetchPost = async () => {
     try {
-      const response = await axios.get(`${API}/posts/${params.slug}`)
+      const response = await axios.get(`${API_URL}/posts/${params.slug}`)
       setPost(response.data)
       
       // Tegishli postlarni olish
       const relatedResponse = await axios.get(
-        `${API}/posts?category=${response.data.category}&limit=3`
+        `${API_URL}/posts?category=${response.data.category}&limit=3`
       )
       setRelatedPosts(relatedResponse.data.posts.filter(p => p.slug !== params.slug))
     } catch (error) {
@@ -44,7 +44,7 @@ export default function BlogPostPage() {
     if (liked || !post) return
 
     try {
-      await axios.post(`${API}/posts/${params.slug}/like`)
+      await axios.post(`${API_URL}/posts/${params.slug}/like`)
       setPost({ ...post, likes: post.likes + 1 })
       setLiked(true)
     } catch (error) {

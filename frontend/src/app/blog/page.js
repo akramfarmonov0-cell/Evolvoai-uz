@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Search, Filter, Clock, TrendingUp } from 'lucide-react'
 import axios from 'axios'
+import { API_URL } from '@/lib/config'
 
 export default function BlogPage() {
   const [posts, setPosts] = useState([])
@@ -13,7 +14,6 @@ export default function BlogPage() {
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
-  const API = 'http://localhost:5000/api'
 
   useEffect(() => {
     fetchPosts()
@@ -33,7 +33,7 @@ export default function BlogPage() {
         delete params.excludeCategory
       }
 
-      const response = await axios.get(`${API}/posts`, { params })
+      const response = await axios.get(`${API_URL}/posts`, { params })
       setPosts(response.data.posts)
       setTotalPages(response.data.totalPages)
     } catch (error) {
@@ -45,7 +45,7 @@ export default function BlogPage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(`${API}/posts/meta/categories`)
+      const response = await axios.get(`${API_URL}/posts/meta/categories`)
       const filtered = Array.isArray(response.data) ? response.data.filter(c => c.category !== 'news') : []
       setCategories(filtered)
     } catch (error) {
@@ -62,7 +62,7 @@ export default function BlogPage() {
         searchParams.category = selectedCategory
         delete searchParams.excludeCategory
       }
-      const response = await axios.get(`${API}/posts/search`, { params: searchParams })
+      const response = await axios.get(`${API_URL}/posts/search`, { params: searchParams })
       setPosts(response.data)
     } catch (error) {
       console.error('Qidirishda xato:', error)

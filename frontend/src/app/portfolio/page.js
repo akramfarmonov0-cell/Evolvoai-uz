@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { Briefcase, ExternalLink, Github, Clock, User, Star } from 'lucide-react'
+import axios from 'axios'
+import { API_URL } from '@/lib/config'
 
 export default function PortfolioPage() {
   const [portfolios, setPortfolios] = useState([])
@@ -15,8 +17,8 @@ export default function PortfolioPage() {
   const loadPortfolios = async () => {
     try {
       setLoading(true)
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/portfolio`)
-      const data = await response.json()
+      const response = await axios.get(`${API_URL}/portfolio`)
+      const data = await response.data
       setPortfolios(Array.isArray(data) ? data : [])
     } catch (err) {
       console.error('Portfolio yuklashda xato:', err)
